@@ -3,11 +3,16 @@
 #include <string>
 #include <iostream>
 
+extern "C" {
+    #include <libavformat/avformat.h>
+    #include <libavcodec/avcodec.h>
+}
+
 std::string get_token_from_file(const std::string& filename);
 
 int main() {
-
     std::string token = get_token_from_file("../token.txt");
+
     if(token.empty()){
         std::cerr << "Token is empty. Ensure the config file is set up correctly.\n";
         return 1;

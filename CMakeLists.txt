@@ -3,6 +3,7 @@ project(Bot__)
 
 find_package(PkgConfig)
 pkg_check_modules(DPP_PKG dpp)
+pkg_check_modules(FFMPEG REQUIRED libavformat libavcodec libavutil)
 
 if(DPP_PKG_FOUND)
     message(STATUS "DPP found with pkg-config")
@@ -18,8 +19,8 @@ else()
 endif()
 
 find_package(OpenSSL REQUIRED)
-include_directories(${DPP_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
+include_directories(${DPP_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR} ${FFMPEG_INCLUDE_DIRS})
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(Bot__ bot.cpp)
-target_link_libraries(Bot__ ${DPP_LIBRARIES} ${OPENSSL_LIBRARIES})
+target_link_libraries(Bot__ ${DPP_LIBRARIES} ${OPENSSL_LIBRARIES} ${FFMPEG_LIBRARIES})
