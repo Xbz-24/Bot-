@@ -1,6 +1,25 @@
 cmake_minimum_required(VERSION 3.27)
 project(Bot__)
 
+find_package(PkgConfig)
+pkg_check_modules(DPP_PKG dpp)
+
+if(DPP_PKG_FOUND)
+    message(STATUS "DPP found with pkg-config")
+    set(DPP_INCLUDE_DIRS ${DPP_PKG_INCLUDE_DIRS})
+    set(DPP_LIBRARIES ${DPP_PKG_LIBRARIES})
+else()
+    find_package(DPP REQUIRED)
+    if(DPP_FOUND)
+        message(STATUS "DPP found with CMake find_package")
+    else()
+        message(FATAL_ERROR "DPP not found")
+    endif()
+endif()
+
+find_package(OpenSSL REQUIRED)
+include_directories(${DPP_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(Bot__ main.cpp)
+target_link_libraries(Bot__ ${DPP_LIBRARIES} ${OPENSSL_LIBRARIES})
