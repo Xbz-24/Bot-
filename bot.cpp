@@ -3,20 +3,7 @@
 #include <string>
 #include <iostream>
 
-std::string get_token_from_file(const std::string& filename){
-    std::ifstream stream(filename);
-    std::string token;
-    if(stream){
-        std::getline(stream, token);
-        size_t pos = token.find('=');
-        if(pos != std::string::npos){
-            token = token.substr(pos + 1);
-        }
-    }else{
-        std::cerr << "Unable to open config file!\n";
-    }
-    return token;
-}
+std::string get_token_from_file(const std::string& filename);
 
 int main() {
 
@@ -43,4 +30,19 @@ int main() {
     });
 
     bot.start(dpp::st_wait);
+}
+
+std::string get_token_from_file(const std::string& filename){
+    std::ifstream stream(filename);
+    std::string token;
+    if(stream){
+        std::getline(stream, token);
+        size_t pos = token.find('=');
+        if(pos != std::string::npos){
+            token = token.substr(pos + 1);
+        }
+    }else{
+        std::cerr << "Unable to open config file!\n";
+    }
+    return token;
 }
