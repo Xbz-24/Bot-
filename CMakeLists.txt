@@ -21,5 +21,5 @@ find_package(OpenSSL REQUIRED)
 include_directories(${DPP_INCLUDE_DIRS} ${OPENSSL_INCLUDE_DIR})
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(Bot__ main.cpp)
+add_executable(Bot__ bot.cpp)
 target_link_libraries(Bot__ ${DPP_LIBRARIES} ${OPENSSL_LIBRARIES})
