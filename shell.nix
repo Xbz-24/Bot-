@@ -1,9 +1,11 @@
 { pkgs ? import <nixpkgs> {} }:
 let
    dpp = import ./default.nix { inherit pkgs; };
+   unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
 in
 pkgs.mkShell {
   buildInputs = with pkgs; [
+    unstable.fmt
     cmake
     dpp
 	openssl
