@@ -2,6 +2,9 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <array>
+#include <memory>
+#include <cstdio>
 
 extern "C" {
     #include <libavformat/avformat.h>
@@ -10,7 +13,18 @@ extern "C" {
 
 std::string get_token_from_file(const std::string& filename);
 
-int main() {
+std::string exec(const char* cmd);
+
+std::string getYtDlpUrl(const std::string& youtubeUrl);
+
+
+
+std::string getAudioInfo(const std::string& url) {
+    std::string command = "ffprobe -v quiet -print_format json -show_streams \"" + url + "\"";
+    return exec(command.c_str());
+}
+
+int run_bot(){
     std::string token = get_token_from_file("../token.txt");
 
     if(token.empty()){
@@ -19,6 +33,7 @@ int main() {
     }
 
     dpp::cluster bot(token);
+
 
     bot.on_log(dpp::utility::cout_logger());
 
@@ -37,6 +52,16 @@ int main() {
     bot.start(dpp::st_wait);
 }
 
+int main() {
+
+    std::string streamURL = getYtDlpUrl("https://youtu.be/7qFfFVSerQo");
+    if (!streamURL.empty()) {
+        std::cout << "Streaming URL: " << streamURL << std::endl;
+    } else {
+        std::cerr << "Failed to get streaming URL." << std::endl;
+    }
+}
+
 std::string get_token_from_file(const std::string& filename){
     std::ifstream stream(filename);
     std::string token;
@@ -50,4 +75,23 @@ std::string get_token_from_file(const std::string& filename){
         std::cerr << "Unable to open config file!\n";
     }
     return token;
+}
+
+
+std::string exec(const char* cmd){
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if(!pipe){
+        throw std::runtime_error("popen() failed!");
+    }
+    while(fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr){
+        result += buffer.data();
+    }
+    return result;
+}
+
+std::string getYtDlpUrl(const std::string& youtubeUrl) {
+    std::string command = "yt-dlp -f bestaudio --get-url \"" + youtubeUrl + "\"";
+    return exec(command.c_str());
 }

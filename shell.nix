@@ -13,6 +13,7 @@ pkgs.mkShell {
 	pkg-config
 	ffmpeg_5
 	youtube-dl
+	yt-dlp
   ];
   shellHook = with pkgs; ''
     echo ""
@@ -24,7 +25,8 @@ pkgs.mkShell {
     echo "openssl path              : ${openssl}"
     echo "dpp path                  : ${dpp}"
     echo "cmake path                : ${cmake}"
-    echo "youtube-dl path           : ${cmake}"
+    echo "youtube-dl path           : ${youtube-dl}"
+    echo "yt-dlp path               : ${yt-dlp}"
     echo "---------------------------------------------------------------------------------------"
   '';
 }
