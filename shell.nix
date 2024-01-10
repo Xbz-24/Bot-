@@ -8,14 +8,14 @@ pkgs.mkShell {
     unstable.fmt
     cmake
     dpp
-	openssl
-	zlib
-	libsodium
-	libopus
-	pkg-config
-	ffmpeg_5
-	youtube-dl
-	yt-dlp
+	  openssl
+	  zlib
+	  libsodium
+	  libopus
+	  pkg-config
+	  ffmpeg_5
+	  youtube-dl
+	  yt-dlp
   ];
   shellHook = with pkgs; ''
     echo ""
