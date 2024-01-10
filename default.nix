@@ -1,4 +1,7 @@
 { pkgs }:
+let
+   libExt = if pkgs.stdenv.hostPlatform.isDarwin then ".dylib" else ".so";
+in
 pkgs.stdenv.mkDerivation rec {
   pname = "dpp";
   version = "10.0.29";
@@ -13,8 +16,7 @@ pkgs.stdenv.mkDerivation rec {
   nativeBuildInputs = with pkgs; [ 
     cmake 
     libopus
-  ] 
-  ++ lib.optional (stdenv.hostPlatform.isLinux) autoPatchelfHook;
+  ] ++ lib.optional (stdenv.hostPlatform.isLinux) autoPatchelfHook;
 
   buildInputs = with pkgs; [ 
     openssl 
@@ -36,8 +38,8 @@ pkgs.stdenv.mkDerivation rec {
     "-DLibsodium_LIBRARY=${pkgs.libsodium.out}/lib"
     "-DOPENSSL_ROOT_DIR=${openssl.dev}"
     "-DOPENSSL_LIBRARIES=${openssl.out}/lib"
-    "-DOPENSSL_CRYPTO_LIBRARY=${openssl.out}/lib/libcrypto.dylib"
-    "-DOPENSSL_SSL_LIBRARY=${openssl.out}/lib/libssl.dylib"
+    "-DOPENSSL_CRYPTO_LIBRARY=${openssl.out}/lib/libcrypto${libExt}"
+    "-DOPENSSL_SSL_LIBRARY=${openssl.out}/lib/libssl${libExt}"
     "-DOPENSSL_INCLUDE_DIR=${openssl.dev}/include"
   ];
 

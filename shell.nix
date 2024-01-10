@@ -11,7 +11,7 @@ pkgs.mkShell {
 	  openssl
 	  zlib
 	  libsodium
-	  libopus
+	  libopus111
 	  pkg-config
 	  ffmpeg_5
 	  youtube-dl
